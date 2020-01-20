@@ -1,0 +1,50 @@
+@media print {
+	@page{
+		size: auto;  
+		margin: 0;
+	}
+	.noprint{
+		visibility: hidden;
+	}
+	
+}
+
+.item{
+	background: #fff;
+	text-align: center;
+	min-height: 350px;
+	padding: 40px;
+}
+.gambar{
+	width: 300px;
+	height: 150px;
+}
+.contoh{
+	width:400px;
+	height:400px;
+}
+.containerStyle{
+	position: relative;
+}
+.BottomOfPage{
+	position: absolute;
+	bottom: 0;
+}
+.centerImage{
+	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+  	width: 50%;
+}
+.example{
+    background-image: url('esco profil.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:  cover;    
+}
+
+.buttonControl{
+	display: flex; 
+	align-items: center; 
+	justify-content: center;
+}
