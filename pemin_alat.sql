@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version 5.5.5-10.1.35-MariaDB)
-# Date: 2020-01-14 21:36:34
+# Date: 2020-01-29 19:41:22
 # Generator: MySQL-Front 6.1  (Build 1.10)
 
 
@@ -39,7 +39,7 @@ CREATE TABLE `anggota` (
 # Data for table "anggota"
 #
 
-INSERT INTO `anggota` VALUES (1211212,'Bidar','12345678','Office'),(1212121,'Mizan','12345678','Bengkel'),(3216610,'Aldi','12345678','Office'),(12131212,'Sidik Morishi','katalogesco','Office'),(65558790,'Boy','1234','Office');
+INSERT INTO `anggota` VALUES (1212121,'Mizan','12345678','Operator'),(3216610,'Aldi','12345678','Office'),(12131212,'Sidik Morishi','katalogesco','Office'),(65558790,'Boy','1234','Office');
 
 #
 # Structure for table "barang"
@@ -73,7 +73,7 @@ CREATE TABLE `peminjaman` (
   `id_brg` int(11) NOT NULL,
   `id_karyawan` int(11) NOT NULL,
   `jml_brg` int(11) NOT NULL,
-  `tgl_pinjam` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+  `tgl_pinjam` date DEFAULT '0000-00-00',
   `status` tinyint(1) NOT NULL DEFAULT '0',
   KEY `id_brg` (`id_brg`,`id_karyawan`),
   KEY `id_peminjam` (`id_karyawan`),
@@ -98,7 +98,7 @@ CREATE TABLE `pengembalian` (
   `id_brg` int(11) DEFAULT NULL,
   `id_karyawan` int(11) DEFAULT NULL,
   `jml_brg` int(11) DEFAULT NULL,
-  `tgl_pinjam` varchar(40) DEFAULT NULL,
+  `tgl_pinjam` date DEFAULT NULL,
   `tgl_kembali` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

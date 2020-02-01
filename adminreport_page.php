@@ -1,14 +1,15 @@
 <?php
-    session_start();
-    if (!isset($_SESSION['admin'])) {
-        header('location:login_page.php');
-    } else {
-        $admin = $_SESSION['admin'];
-        $namaadmin = $_SESSION['adminname'];
-    }
+session_start();
+if (!isset($_SESSION['admin'])) {
+    header('location:login_page.php');
+} else {
+    $admin = $_SESSION['admin'];
+    $namaadmin = $_SESSION['adminname'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,51 +19,60 @@
     <link href="bootstrap/dist/css/global.css" rel="stylesheet">
     <link href="bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 </head>
+
 <body>
     <?php
-        include "navbar_admin.php";
-        require 'config/koneksi.php';
+    include "navbar_admin.php";
+    require 'config/koneksi.php';
+    require_once 'templates/footer.php';
     ?>
     <div class="col-md-8 col-md-offset-2 main">
         <h1 class="page-header">Cetak Laporan</h1>
         <div class="row">
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Laporan Peminjaman</div>
-                    <div class="panel-body">
-                        <label for="tanggalawal">Dari Tanggal</label>
-                        <input name="tanggalawal" id="tanggalawal" type="date" class="form-control" value="<?php echo date('Y-m-d',strtotime("-1 days"))?>">
-                        <br>
-                        <label for="tanggalakhir">Sampai Tanggal</label>
-                        <input name="tanggalakhir" id="tanggalakhir" type="date" class="form-control" value="<?php echo date("Y-m-d")?>">
-                        <br>
-                        <a class="btn btn-primary btn-block" href="">Cetak Laporan Peminjaman</a>
+            <form action="cetak/reportpeminjaman.php" method="post">
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Laporan Peminjaman</div>
+                        <div class="panel-body">
+                            <label for="tanggalawal1">Dari Tanggal</label>
+                            <input name="tanggalawal1" id="tanggalawal1" type="date" class="form-control" value="<?php echo date('Y-m-d', strtotime("-1 days")) ?>">
+                            <br>
+                            <label for="tanggalakhir">Sampai Tanggal</label>
+                            <input name="tanggalakhir1" id="tanggalakhir1" type="date" class="form-control" value="<?php echo date("Y-m-d") ?>">
+                            <br>
+                            <input type="submit" class="btn btn-primary btn-block" value="Cetak Laporan Peminjaman">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Laporan Stok Tools</div>
-                    <div class="panel-body">
-                        <a class="btn btn-primary btn-block" href="">Cetak Laporan Stok Tools</a>
+            </form>
+            <form action="cetak/reportstok.php" method="post">
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Laporan Stok Tools</div>
+                        <div class="panel-body">
+                            <input type="submit" class="btn btn-primary btn-block" value="Cetak Laporan Stok Tools">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Laporan Pengembalian</div>
-                    <div class="panel-body">
-                        <label for="tanggalawal">Dari Tanggal</label>
-                        <input name="tanggalawal" id="tanggalawal" type="date" class="form-control" value="<?php echo date('Y-m-d',strtotime("-1 days"))?>">
-                        <br>
-                        <label for="tanggalakhir">Sampai Tanggal</label>
-                        <input name="tanggalakhir" id="tanggalakhir" type="date" class="form-control" value="<?php echo date("Y-m-d")?>" max="<?php echo date('Y-m-d')?>">
-                        <br>
-                        <a class="btn btn-primary btn-block" href="">Cetak Laporan Peminjaman</a>
+            </form>
+            <form action="cetak/reportpengembalian.php" method="post">
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Laporan Pengembalian</div>
+                        <div class="panel-body">
+                            <label for="tanggalawal2">Dari Tanggal</label>
+                            <input name="tanggalawal2" id="tanggalawal2" type="date" class="form-control" value="<?php echo date('Y-m-d', strtotime("-1 days")) ?>">
+                            <br>
+                            <label for="tanggalakhir2">Sampai Tanggal</label>
+                            <input name="tanggalakhir2" id="tanggalakhir2" type="date" class="form-control" value="<?php echo date("Y-m-d") ?>" max="<?php echo date('Y-m-d') ?>">
+                            <br>
+                            <input type="submit" class="btn btn-primary btn-block" value="Cetak Laporan Pengembalian">
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </body>
+
 </html>
