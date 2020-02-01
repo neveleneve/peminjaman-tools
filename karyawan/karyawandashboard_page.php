@@ -1,13 +1,12 @@
 <?php
-    session_start();
-    if (!isset($_SESSION['nama_karyawan'])) {
-        header('location:../login_page.php');
-    } else {
-        $karyawan = $_SESSION['nama_karyawan'];
-        $idkaryawan = $_SESSION['id_karyawan'];        
-    }
+session_start();
+if (!isset($_SESSION['nama_karyawan'])) {
+    header('location:../login_page.php');
+} else {
+    $karyawan = $_SESSION['nama_karyawan'];
+    $idkaryawan = $_SESSION['id_karyawan'];
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,13 +19,15 @@
     <link href="../bootstrap/dist/css/global.css" rel="stylesheet">
     <link href="../bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 </head>
-
 <body>
     <?php
-        include 'navbar_karyawan.php';
-        require 'config/koneksi.php';
-        $querycheckdata = $mysqli->query("select count(id_brg) as aaa from barang");
-        $checkdata = mysqli_fetch_assoc($querycheckdata);
+    require 'config/koneksi.php';
+    $checkpinjaman = "select * from peminjaman where id_karyawan='$idkaryawan' and status=0";
+    $exepinjaman = $mysqli->query($checkpinjaman);
+    include 'notifdeadlinelewat.php';
+    include 'navbar_karyawan.php';
+    $querycheckdata = $mysqli->query("select count(id_brg) as aaa from barang");
+    $checkdata = mysqli_fetch_assoc($querycheckdata);
     ?>
     <div class="col-md-8 col-md-offset-2 main">
         <h1 class="page-header">Dashboard</h1>
@@ -37,40 +38,41 @@
                 <button class="btn btn-primary" type="submit" value="Cari"><i class="fa fa-search"></i></button>
             </span>
         </form>
-        <?php 
-            if(isset($_GET['cari'])){
-	            $cari = $_GET['cari'];	                        
-            }
+        <?php
+        if (isset($_GET['cari'])) {
+            $cari = $_GET['cari'];
+        }
         ?>
         <br>
-        <div class="row">            
-            <?php                
-                if (isset($_GET['cari'])) {
-                    $cari = $_GET['cari'];
-                    $sql = "SELECT * from barang 
-                    where id_brg like '%".$cari."%' 
-                    or nama_brg like '%".$cari."%'  
-                    or jenis_brg like '%".$cari."%' 
+        <div class="row">
+            <?php
+            if (isset($_GET['cari'])) {
+                $cari = $_GET['cari'];
+                $sql = "SELECT * from barang 
+                    where id_brg like '%" . $cari . "%' 
+                    or nama_brg like '%" . $cari . "%'  
+                    or jenis_brg like '%" . $cari . "%' 
                     order by id_brg";
-                }else{
-                    $sql = "SELECT * from barang";
-                }
-                $query = $mysqli->query($sql);
-                while($data = mysqli_fetch_assoc($query)){
+            } else {
+                $sql = "SELECT * from barang";
+            }
+            $query = $mysqli->query($sql);
+            while ($data = mysqli_fetch_assoc($query)) {
             ?>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><?php echo $data['nama_brg']?></div>
-                    <div class="panel-body">
-                        <?php echo '<img src="data:image/jpeg;base64,'.base64_encode($data['foto']).'" style="margin:4px; width:200px; height:200px;">' ?>
-                        <h4>Jenis Barang : <?php echo $data['jenis_brg']?></h4>
-                        <h4>Stok Tools : <?php echo $data['stok_brg']?></h4>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><?php echo $data['nama_brg'] ?></div>
+                        <div class="panel-body">
+                            <?php echo '<img src="data:image/jpeg;base64,' . base64_encode($data['foto']) . '" style="margin:4px; width:200px; height:200px;">' ?>
+                            <h4>Jenis Barang : <?php echo $data['jenis_brg'] ?></h4>
+                            <h4>Stok Tools : <?php echo $data['stok_brg'] ?></h4>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <?php }?>
+            <?php } ?>
         </div>
     </div>
 </body>
-<?php require_once 'templates/footer.php'?>
+<?php require_once 'templates/footer.php' ?>
+
 </html>

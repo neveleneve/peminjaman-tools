@@ -32,7 +32,7 @@
             }            
         }
     </script>
-    <?php
+    <?php        
         include 'navbar_karyawan.php';
         require 'config/koneksi.php';
         $querycheckdata = $mysqli->query("select count(id_brg) as aaa from barang");
