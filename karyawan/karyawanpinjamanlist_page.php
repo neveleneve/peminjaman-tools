@@ -21,9 +21,18 @@ if (!isset($_SESSION['nama_karyawan'])) {
 </head>
 
 <body>
-    <?php    
+    <?php
     include 'navbar_karyawan.php';
     require 'config/koneksi.php';
+    $checkpinjamandekat = "select * from peminjaman where id_karyawan='$idkaryawan' and status=0 and tgl_wajib_kembali between DATE(NOW()) and DATE(NOW()) + INTERVAL 2 DAY";
+    $checkpinjamanlewat = "select * from peminjaman where id_karyawan='$idkaryawan' and status=0 and tgl_wajib_kembali < DATE(NOW())";
+    $exepinjamandekat = $mysqli->query($checkpinjamandekat);
+    $exepinjamanlewat = $mysqli->query($checkpinjamanlewat);
+    if (mysqli_num_rows($exepinjamanlewat) != 0) {
+        include 'notifdeadlinelewat.php';
+    } elseif (mysqli_num_rows($exepinjamandekat) != 0) {
+        include 'notifdeadlinedekat.php';
+    }
     $querycheckdata = $mysqli->query("select count(id_brg) as aaa from barang");
     $checkdata = mysqli_fetch_assoc($querycheckdata);
     ?>
@@ -44,7 +53,6 @@ if (!isset($_SESSION['nama_karyawan'])) {
         <br>
         <div class="row">
             <div class="col-md-12">
-
                 <table class="table table-bordered table-striped table-hover">
                     <thead>
                         <tr>
@@ -52,13 +60,14 @@ if (!isset($_SESSION['nama_karyawan'])) {
                             <th>Nama Barang</th>
                             <th>Jumlah Peminjaman</th>
                             <th>Tanggal Pinjam</th>
+                            <th>Tanggal Wajib Kembali</th>
                             <th>Status Peminjaman</th>
                         </tr>
                     </thead>
                     <?php
                     if (isset($_GET['cari'])) {
                         $sql = "SELECT peminjaman.id_peminjaman, barang.nama_brg, 
-                            peminjaman.jml_brg, peminjaman.tgl_pinjam, peminjaman.status 
+                            peminjaman.jml_brg, peminjaman.tgl_pinjam, peminjaman.status, peminjaman.tgl_wajib_kembali
                             from peminjaman 
                             join barang 
                             on peminjaman.id_brg = barang.id_brg 
@@ -68,7 +77,7 @@ if (!isset($_SESSION['nama_karyawan'])) {
                             order by id_peminjaman asc";
                     } else {
                         $sql = "SELECT peminjaman.id_peminjaman, barang.nama_brg, 
-                            peminjaman.jml_brg, peminjaman.tgl_pinjam, peminjaman.status 
+                            peminjaman.jml_brg, peminjaman.tgl_pinjam, peminjaman.status, peminjaman.tgl_wajib_kembali
                             from peminjaman 
                             join barang 
                             on peminjaman.id_brg = barang.id_brg 
@@ -85,7 +94,17 @@ if (!isset($_SESSION['nama_karyawan'])) {
                                 <td><?php echo $show['nama_brg'] ?></td>
                                 <td><?php echo $show['jml_brg'] ?></td>
                                 <td><?php echo date('d M Y', strtotime($show['tgl_pinjam'])); ?></td>
-                                <td class="text-center"><span class="btn btn-<?php echo $show['status'] == 1 ? 'success' : 'danger' ?> fa fa-border fa-<?php echo $show['status'] == 1 ? 'check' : 'remove' ?>" disabled></span></td>
+                                <td><?php echo date('d M Y', strtotime($show['tgl_wajib_kembali'])); ?></td>
+                                <td class="text-center">
+                                    <span class="btn btn-<?php echo $show['status'] == 1 ? 'success' : 'danger' ?> fa fa-border fa-<?php echo $show['status'] == 1 ? 'check' : 'remove' ?>" disabled></span>
+                                    <?php
+                                    if (strtotime($show['tgl_wajib_kembali']) < time()) { ?>
+                                        <span class="btn btn-danger fa fa-border fa-warning" data-toggler="tooltip" title="Peminjaman Sudah Melewati Batas Waktu Peminjaman" disabled></span>
+                                    <?php
+                                    } elseif (strtotime('+3 day', time()) > strtotime($show['tgl_wajib_kembali'])) { ?>
+                                        <span class="btn btn-info fa fa-border fa-warning" data-toggler="tooltip" title="Peminjaman Sudah Melewati Batas Waktu Peminjaman" disabled></span>
+                                    <?php } ?>
+                                </td>
                             </tr>
                         <?php } ?>
                     </tbody>

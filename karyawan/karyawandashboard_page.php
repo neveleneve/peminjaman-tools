@@ -19,12 +19,17 @@ if (!isset($_SESSION['nama_karyawan'])) {
     <link href="../bootstrap/dist/css/global.css" rel="stylesheet">
     <link href="../bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 </head>
+
 <body>
     <?php
     require 'config/koneksi.php';
     $checkpinjaman = "select * from peminjaman where id_karyawan='$idkaryawan' and status=0";
     $exepinjaman = $mysqli->query($checkpinjaman);
-    include 'notifdeadlinelewat.php';
+    $row = mysqli_fetch_assoc($exepinjaman);
+        
+    // if($row['tgl']){
+    //     include 'notifdeadlinelewat.php';
+    // }    
     include 'navbar_karyawan.php';
     $querycheckdata = $mysqli->query("select count(id_brg) as aaa from barang");
     $checkdata = mysqli_fetch_assoc($querycheckdata);
