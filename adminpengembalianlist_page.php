@@ -47,14 +47,13 @@
                         <th class="text-center">Nama Barang</th>
                         <th class="text-center">Jumlah</th>
                         <th class="text-center">Tanggal Pinjam</th>
+                        <th class="text-center">Tanggal Batas Peminjaman</th>
                         <th class="text-center">Tanggal Kembali</th>
                     </thead>
                     <?php                        
                         if(isset($_GET['cari'])){
                             $cari = $_GET['cari'];
-                            $sql = "SELECT pengembalian.id, pengembalian.tgl_kembali, barang.nama_brg, 
-                            pengembalian.jml_brg, pengembalian.tgl_pinjam, 
-                            anggota.nama_karyawan FROM pengembalian 
+                            $sql = "SELECT * FROM pengembalian 
                             JOIN anggota ON pengembalian.id_karyawan=anggota.id_karyawan 
                             JOIN barang ON barang.id_brg = pengembalian.id_brg 
                             where pengembalian.id like '%".$cari."%' 
@@ -62,9 +61,7 @@
                             or anggota.id_karyawan like '%".$cari."%' 
                             order by pengembalian.id asc";
                         }else{
-                            $sql = "SELECT pengembalian.id, pengembalian.tgl_kembali, barang.nama_brg, 
-                            pengembalian.jml_brg, pengembalian.tgl_pinjam, 
-                            anggota.nama_karyawan FROM pengembalian 
+                            $sql = "SELECT * FROM pengembalian 
                             JOIN anggota ON pengembalian.id_karyawan=anggota.id_karyawan 
                             JOIN barang ON barang.id_brg = pengembalian.id_brg 
                             order by pengembalian.id asc";
@@ -81,6 +78,7 @@
                             <td class="text-center"><?php echo $lihat['nama_brg'];?></td>
                             <td class="text-center"><?php echo $lihat['jml_brg'];?></td>
                             <td class="text-center"><?php echo date('d M Y',strtotime($lihat['tgl_pinjam'])); ?></td>
+                            <td class="text-center"><?php echo date('d M Y',strtotime($lihat['tgl_wajib_kembali'])); ?></td>
                             <td class="text-center"><?php echo date('d M Y',strtotime($lihat['tgl_kembali'])); ?></td>
                         </tr>
                         <?php

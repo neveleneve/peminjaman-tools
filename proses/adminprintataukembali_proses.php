@@ -122,19 +122,20 @@
                     echo 'id barang = '.$idbrg[$i];
                     echo '<br>';        
                     // ambil tgl_pinjam dari tabel peminjaman untuk insert ke pengembalian                    
-                    $pilih = $mysqli->query("SELECT tgl_pinjam, jml_brg from peminjaman where id_peminjaman='$id_pinjam' and id_brg='$idbrg[$i]'");
+                    $pilih = $mysqli->query("SELECT tgl_pinjam, tgl_wajib_kembali, jml_brg from peminjaman where id_peminjaman='$id_pinjam' and id_brg='$idbrg[$i]'");
                     $row = mysqli_fetch_assoc($pilih);
                     $jml_brg = $row['jml_brg'];
                     echo 'jml brg = '.$jml_brg;
                     echo '<br>';
                     $tglpnjm = $row['tgl_pinjam'];
+                    $tglwjbkembali = $row['tgl_wajib_kembali'];
                     echo 'tgl pinjam = '.$tglpnjm;
                     //update status peminjaman dari 0 -> 1
                     $ganti = "UPDATE peminjaman set status = 1 where id_peminjaman='$id_pinjam' AND id_brg='$idbrg[$i]'";
                     $update = $mysqli->query($ganti);
                     if ($update) {
-                        $tambah = "INSERT INTO pengembalian (id, id_karyawan, id_peminjaman, id_brg, jml_brg, tgl_pinjam, tgl_kembali) 
-                                VALUES($nomor, $id_kry, $id_pinjam, $idbrg[$i], $jml_brg, '$tglpnjm', now())";
+                        $tambah = "INSERT INTO pengembalian (id, id_karyawan, id_peminjaman, id_brg, jml_brg, tgl_pinjam, tgl_wajib_kembali, tgl_kembali) 
+                                VALUES($nomor, $id_kry, $id_pinjam, $idbrg[$i], $jml_brg, '$tglpnjm', '$tglwjbkembali', now())";
                         $add = $mysqli->query($tambah);    
                         if($add) {
                             $updatestok = $mysqli->query("UPDATE barang set stok_brg = stok_brg + $jml_brg where id_brg = $idbrg[$i]");

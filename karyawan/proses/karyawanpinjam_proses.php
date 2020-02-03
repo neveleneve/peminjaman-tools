@@ -4,7 +4,7 @@
     include "../config/koneksi.php";
     $idpinjamgeneratequery = $mysqli->query("SELECT max(id_peminjaman) as a FROM peminjaman");
     $idpinjam = mysqli_fetch_assoc($idpinjamgeneratequery);
-    $tgl = date('Y-m-d');
+    // $tgl = date('Y-m-d');
     // generate new id_peminjaman
     echo $idpinjam['a']+1;
     $id_pinjam = $idpinjam['a']+1;
@@ -14,7 +14,7 @@
         $idbrg = $data['id_brg'];
         if ($jumlah == 0) {            
         }else {
-            $addquery = $mysqli->query("INSERT INTO peminjaman values ($id_pinjam, $idbrg, $idkry, $jumlah, '$tgl', 0)");
+            $addquery = $mysqli->query("INSERT INTO peminjaman values ($id_pinjam, $idbrg, $idkry, $jumlah, DATE(NOW()), DATE(NOW()) + INTERVAL 7 DAY,  0)");
             $updatestock = $mysqli->query("UPDATE barang SET stok_brg = stok_brg - $jumlah WHERE id_brg = $idbrg");
         }
     }

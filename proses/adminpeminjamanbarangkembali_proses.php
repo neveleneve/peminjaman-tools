@@ -18,7 +18,7 @@
     $ganti = "UPDATE peminjaman set status = 1 where id_peminjaman='$id_pnjm' AND id_brg='$id_barg'";
     $update = $mysqli->query($ganti);
     if($update) {
-        $tambah = "INSERT INTO pengembalian (id, id_karyawan, id_peminjaman, id_brg, jml_brg, tgl_pinjam, tgl_kembali) 
+        $tambah = "INSERT INTO pengembalian (id, id_karyawan, id_peminjaman, id_brg, jml_brg, tgl_pinjam, tgl_wajib_kembali, tgl_kembali) 
                     VALUES($nomor, $id_kry, $id_pnjm, $id_barg, $jml_brg, '$tglpnjm', now())";
         $add = $mysqli->query($tambah);    
         if($add) {

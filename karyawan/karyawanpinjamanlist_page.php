@@ -22,9 +22,9 @@ if (!isset($_SESSION['nama_karyawan'])) {
 
 <body>
     <?php
-    include 'navbar_karyawan.php';
     require 'config/koneksi.php';
-    $checkpinjamandekat = "select * from peminjaman where id_karyawan='$idkaryawan' and status=0 and tgl_wajib_kembali between DATE(NOW()) and DATE(NOW()) + INTERVAL 2 DAY";
+    include 'navbar_karyawan.php';
+    $checkpinjamandekat = "select * from peminjaman where id_karyawan='$idkaryawan' and status=0 and tgl_wajib_kembali between DATE(NOW()) and DATE(NOW()) + INTERVAL 3 DAY";
     $checkpinjamanlewat = "select * from peminjaman where id_karyawan='$idkaryawan' and status=0 and tgl_wajib_kembali < DATE(NOW())";
     $exepinjamandekat = $mysqli->query($checkpinjamandekat);
     $exepinjamanlewat = $mysqli->query($checkpinjamanlewat);
@@ -56,12 +56,12 @@ if (!isset($_SESSION['nama_karyawan'])) {
                 <table class="table table-bordered table-striped table-hover">
                     <thead>
                         <tr>
-                            <th>No Peminjaman</th>
-                            <th>Nama Barang</th>
-                            <th>Jumlah Peminjaman</th>
-                            <th>Tanggal Pinjam</th>
-                            <th>Tanggal Wajib Kembali</th>
-                            <th>Status Peminjaman</th>
+                            <th class="text-center">Nomor Peminjaman</th>
+                            <th class="text-center">Nama Barang</th>
+                            <th class="text-center">Jumlah Peminjaman</th>
+                            <th class="text-center">Tanggal Pinjam</th>
+                            <th class="text-center">Tanggal Wajib Kembali</th>
+                            <th class="text-center">Status Peminjaman</th>
                         </tr>
                     </thead>
                     <?php
@@ -89,20 +89,20 @@ if (!isset($_SESSION['nama_karyawan'])) {
                         <?php $querytools = $mysqli->query($sql);
                         while ($show = mysqli_fetch_array($querytools)) {
                         ?>
-                            <tr>
+                            <tr class="text-center">
                                 <td><?php echo $show['id_peminjaman'] ?></td>
                                 <td><?php echo $show['nama_brg'] ?></td>
                                 <td><?php echo $show['jml_brg'] ?></td>
                                 <td><?php echo date('d M Y', strtotime($show['tgl_pinjam'])); ?></td>
                                 <td><?php echo date('d M Y', strtotime($show['tgl_wajib_kembali'])); ?></td>
-                                <td class="text-center">
+                                <td>
                                     <span class="btn btn-<?php echo $show['status'] == 1 ? 'success' : 'danger' ?> fa fa-border fa-<?php echo $show['status'] == 1 ? 'check' : 'remove' ?>" disabled></span>
                                     <?php
                                     if (strtotime($show['tgl_wajib_kembali']) < time()) { ?>
                                         <span class="btn btn-danger fa fa-border fa-warning" data-toggler="tooltip" title="Peminjaman Sudah Melewati Batas Waktu Peminjaman" disabled></span>
                                     <?php
                                     } elseif (strtotime('+3 day', time()) > strtotime($show['tgl_wajib_kembali'])) { ?>
-                                        <span class="btn btn-info fa fa-border fa-warning" data-toggler="tooltip" title="Peminjaman Sudah Melewati Batas Waktu Peminjaman" disabled></span>
+                                        <span class="btn btn-warning fa fa-border fa-warning" data-toggler="tooltip" title="Peminjaman Akan Melewati Batas Waktu Peminjaman" disabled></span>
                                     <?php } ?>
                                 </td>
                             </tr>
